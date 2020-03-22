@@ -6,7 +6,6 @@ int read_html_page(){
     while(!feof(webPage)){
         char c = fgetc(webPage);
         html_body[size] = c;
-        printf("%c",c);
         size++;
     }
     return size;
@@ -36,7 +35,7 @@ int main(int argc,char* argv[]){
   filler.ai_socktype = SOCK_STREAM;
   filler.ai_flags = AI_PASSIVE;
   int status;
-  if ((status = getaddrinfo(NULL, "8080", &filler, &serverInfo)) != 0) {
+  if ((status = getaddrinfo(NULL, PORT_NUM, &filler, &serverInfo)) != 0) {
     Println("(getaddrinfo) Error") 
     exit(EXIT_FAILURE);
   }
