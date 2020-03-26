@@ -32,8 +32,4 @@ static void *get_in_addr(struct sockaddr *sa) {
              ? (void *)&(((struct sockaddr_in *)sa)->sin_addr)
              : (void *)&(((struct sockaddr_in6 *)sa)->sin6_addr);
 }
-static char html_body[HTML_SIZE];
-static char http_response[RESPONSE_SIZE];
-static char http_response_previous[RESPONSE_SIZE];
-static char *tmp_buff = http_response;
 #endif  
