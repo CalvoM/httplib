@@ -13,7 +13,8 @@
 #include <netdb.h>
 #include <sys/wait.h>
 #include <signal.h>
-#define PORT_NUM "8080"
+#include <linux/inotify.h>
+//#define PORT_NUM "8080"
 #define HTML_SIZE 102400
 #define HEADER_SIZE 512
 #define RESPONSE_SIZE 102912
@@ -26,13 +27,13 @@
       printf("\r\n");      \
     } while (0);           \
   }
-void *get_in_addr(struct sockaddr *sa) {
+static void *get_in_addr(struct sockaddr *sa) {
   return sa->sa_family == AF_INET
              ? (void *)&(((struct sockaddr_in *)sa)->sin_addr)
              : (void *)&(((struct sockaddr_in6 *)sa)->sin6_addr);
 }
-char html_body[HTML_SIZE];
-char http_response[RESPONSE_SIZE];
-char http_response_previous[RESPONSE_SIZE];
-char* tmp_buff = http_response;
+static char html_body[HTML_SIZE];
+static char http_response[RESPONSE_SIZE];
+static char http_response_previous[RESPONSE_SIZE];
+static char *tmp_buff = http_response;
 #endif  
