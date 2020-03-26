@@ -10,11 +10,11 @@ gcc server.c -o server
 ## Using the docker container
 ### Build
 ```bash 
-docker build -t mwadime/simple_http_server .
+docker build -t mwadime/my_net_server .
 ```
 ### Run
 ```bash 
-docker run -it -p 8080:8080 mwadime/simple_http_server
+docker run -it -p 8080:8080 mwadime/my_net_server
 ```
 
 Enjoy!
