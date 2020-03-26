@@ -1,11 +1,11 @@
 # http-server in C
 ## Compile the program
 ```bash
-gcc server.c -o server
+g++ main.cpp Server/Server.cpp -o main -I Server/
 ```
 ## Run the program
 ```bash 
-./server
+./main
 ```
 ## Using the docker container
 ### Build
