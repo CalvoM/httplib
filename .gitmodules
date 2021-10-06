@@ -1,0 +1,3 @@
+[submodule "sharedlibs"]
+	path = sharedlibs
+	url = git@github.com:CalvoM/sharedlibs.git
