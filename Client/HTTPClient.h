@@ -2,19 +2,36 @@
 #define HTTP_CLIENT_H_
 
 #include <string>
+#include <map>
+#include <iostream>
 #include "../sharedlibs/network/netutils.h"
 
 using std::string;
+using std::map;
+using std::memset;
+using std::cout;
+
+using Headers = map<string,string>;
 
 class HTTPClient{
 public:
-    HTTPClient(string baseUrl);
-    ~HTTPClient();
+    HTTPClient(string baseUrl, string port="80");
+    ~HTTPClient(){}
     int Get(string endpoint);
+    void SetPort(string port){
+        this->port = port;
+    }
 private:
     string baseUrl;
     TCPClient *tcpClient;
-
+    string port;
+    Headers requestHeaders;
+    Headers responseHeaders;
+    const uint64_t maxHTTPResponseSize = 2048;
+    const string httpMajorVersion="1";
+    const string httpMinorVersion="1";
+    const string httpVersion = "HTTP/"+httpMajorVersion+"."+httpMinorVersion;
+    const string terminator="\r\n";
 };
 
 #endif
