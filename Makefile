@@ -1,2 +1,5 @@
-run:
-	@g++ *.cpp Client/*.cpp sharedlibs/network/*.cpp -I . -I Client/ -I sharedlibs/network/ && ./a.out
+all:
+	@g++ *.cpp Client/*.cpp sharedlibs/network/*.cpp -I . -I Client/ -I sharedlibs/network/ -o httpclient
+
+clean:
+	rm a.out
