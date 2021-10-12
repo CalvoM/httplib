@@ -26,9 +26,12 @@ private:
     TCPClient *tcpClient;
     string port;
     Headers requestHeaders;
+    Headers responseHeaders;
+    const uint64_t maxHTTPResponseSize = 2048;
     const string httpMajorVersion="1";
     const string httpMinorVersion="1";
     const string httpVersion = "HTTP/"+httpMajorVersion+"."+httpMinorVersion;
+    const string crlf="\r\n";
 };
 
 #endif
