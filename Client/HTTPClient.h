@@ -31,7 +31,7 @@ private:
     const string httpMajorVersion="1";
     const string httpMinorVersion="1";
     const string httpVersion = "HTTP/"+httpMajorVersion+"."+httpMinorVersion;
-    const string crlf="\r\n";
+    const string terminator="\r\n";
 };
 
 #endif
