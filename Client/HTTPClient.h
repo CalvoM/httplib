@@ -3,10 +3,15 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 #include "../sharedlibs/network/netutils.h"
 
 using std::string;
 using std::map;
+using std::memset;
+using std::cout;
+
+using Headers = map<string,string>;
 
 class HTTPClient{
 public:
@@ -20,7 +25,7 @@ private:
     string baseUrl;
     TCPClient *tcpClient;
     string port;
-    map<string,string> requestHeaders;
+    Headers requestHeaders;
     const string httpMajorVersion="1";
     const string httpMinorVersion="1";
     const string httpVersion = "HTTP/"+httpMajorVersion+"."+httpMinorVersion;

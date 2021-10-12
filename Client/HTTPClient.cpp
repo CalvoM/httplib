@@ -19,7 +19,10 @@ int HTTPClient::Get(string endpoint){
     tcpClient = new TCPClient();
     tcpClient->Connect(this->requestHeaders["Host"],this->port);
     tcpClient->SendString(message);
-    tcpClient->Recv();
+    char buffer[2048];
+    memset(buffer,0,2048);
+    tcpClient->Recv(buffer,2048);
+    requestHeaders.clear();
     delete tcpClient;
     return 0;
 }
