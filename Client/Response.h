@@ -22,7 +22,7 @@ public:
     void setResponseStatus(string);
     void setBody(string,bool);
 private:
-    Headers headers;
+    Headers resHeaders;
     string responseStatus;
     string body;
 };

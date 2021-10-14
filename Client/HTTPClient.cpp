@@ -32,7 +32,7 @@ int HTTPClient::Get(string endpoint){
 }
 
 Response* HTTPClient::getResponse(char *const buffer) {
-    Response *resp;
+    Response *resp = new Response();
     string bufferStr = string(buffer);
     size_t term_pos = bufferStr.find(this->terminator);
     if(term_pos == string::npos) return nullptr;

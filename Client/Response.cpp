@@ -7,7 +7,6 @@ using std::exception;
 using std::stoi;
 
 Response::Response() {
-    this->headers.clear();
     this->body.clear();
     this->responseStatus.clear();
 }
@@ -21,9 +20,9 @@ void Response::setBody(string body, bool newRequest) {
 void Response::setHeaders(string headers_) {
    size_t l_pos,k_pos;
    string line;
+   string key;
+   string value;
    while((l_pos = headers_.find("\r\n")) != string::npos){
-       string key;
-       string value;
        line = headers_.substr(0,l_pos);
        k_pos = line.find(":");
        if(k_pos == string::npos) return;
@@ -33,8 +32,7 @@ void Response::setHeaders(string headers_) {
        }else{
            value = line.substr(k_pos+1,string::npos);
        }
-       cout<<key<<"="<<value<<std::endl;
-       this->headers[key] = value;
+       this->resHeaders[key] = value;
        cout<<key<<"="<<value<<std::endl;
        headers_ = headers_.substr(l_pos+1,string::npos);
    }
