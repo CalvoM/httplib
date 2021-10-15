@@ -10,7 +10,8 @@ HTTPClient::HTTPClient(string baseUrl,string port){
     this->port = port;
 }
 
-int HTTPClient::Get(string endpoint){
+//Sends GET request to the endpoint
+Response HTTPClient::Get(string endpoint){
     string message;
     string requestLine = "GET "+endpoint+" "+this->httpVersion+this->terminator;
     this->requestHeaders["Connection"] = "keep-alive";
@@ -29,27 +30,28 @@ int HTTPClient::Get(string endpoint){
     char buffer[this->maxHTTPResponseSize];
     memset(buffer,0,sizeof(buffer));
     tcpClient->Recv(buffer,sizeof(buffer));
-    getResponse(buffer);
+    Response resp = getResponse(buffer);
+    cout<<resp.getResponseStatus();
     tcpClient->Disconnect();
-    return 0;
+    return resp;
 }
 
-Response* HTTPClient::getResponse(char *const buffer) {
+Response HTTPClient::getResponse(char *const buffer) {
     unique_ptr<Response> resp(new Response);
     string bufferStr = string(buffer);
     size_t term_pos = bufferStr.find(this->terminator);
-    if(term_pos == string::npos) return nullptr;
+    if(term_pos == string::npos) return *resp;
     string statusLine = bufferStr.substr(0,term_pos);
     size_t space_pos = statusLine.find(" ");
-    if(space_pos == string::npos) return nullptr;
+    if(space_pos == string::npos) return *resp;
     string statusCode = statusLine.substr(space_pos+1, 3);
     resp->setResponseStatus(statusCode);
     bufferStr = bufferStr.substr(term_pos+this->terminator.size(),bufferStr.size());
     size_t headers_end_pos = bufferStr.find("\r\n\r\n");
-    if(headers_end_pos == string::npos) return nullptr;
+    if(headers_end_pos == string::npos) return *resp;
     string headers = bufferStr.substr(0,headers_end_pos);
     resp->setHeaders(headers);
     string body = bufferStr.substr(headers_end_pos+4,string::npos);
     resp->setBody(body,true);
-    return resp.get();
+    return *resp;
 }

@@ -2,5 +2,6 @@
 
 int main(int argc, char **argv){
     HTTPClient client("scratchpads.org");
-    client.Get("/explore/sites-list");
+    auto resp = client.Get("/explore/sites-list");
+    cout<<resp.getBody();
 }

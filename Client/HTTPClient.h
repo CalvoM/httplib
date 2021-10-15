@@ -19,7 +19,7 @@ class HTTPClient{
 public:
     HTTPClient(string baseUrl, string port="80");
     ~HTTPClient(){}
-    int Get(string endpoint);
+    Response Get(string endpoint);
     void SetPort(string port){
         this->port = port;
     }
@@ -34,7 +34,7 @@ private:
     const string httpMinorVersion="1";
     const string httpVersion = "HTTP/"+httpMajorVersion+"."+httpMinorVersion;
     const string terminator="\r\n";
-    Response* getResponse(char* const);
+    Response getResponse(char* const);
 };
 
 #endif

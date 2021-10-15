@@ -21,6 +21,15 @@ public:
     void setHeaders(string);
     void setResponseStatus(string);
     void setBody(string,bool);
+    string getBody() const{
+        return this->body;
+    }
+    string getResponseStatus() const{
+        return this->responseStatus;
+    }
+    Headers getHeaders() const{
+        return this->resHeaders;
+    }
 private:
     Headers resHeaders;
     string responseStatus;

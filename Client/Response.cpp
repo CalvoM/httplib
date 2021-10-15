@@ -32,7 +32,6 @@ void Response::setHeaders(string headers) {
            value = line.substr(k_pos+1,string::npos);
        }
        this->resHeaders[key] = value;
-       cout<<key<<"="<<value<<std::endl;
        headers = headers.substr(l_pos+1,string::npos);
    }
 }
