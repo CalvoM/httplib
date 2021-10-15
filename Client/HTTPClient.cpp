@@ -1,4 +1,7 @@
 #include "HTTPClient.h"
+#include <memory>
+
+using std::unique_ptr;
 
 HTTPClient::HTTPClient(string baseUrl,string port){
     this->baseUrl = baseUrl;
@@ -20,19 +23,19 @@ int HTTPClient::Get(string endpoint){
         }
     }   
     message += this->terminator;
-    tcpClient = new TCPClient();
+    unique_ptr<TCPClient> tcpClient(new TCPClient());
     tcpClient->Connect(this->requestHeaders["Host"],this->port);
     tcpClient->SendString(message);
     char buffer[this->maxHTTPResponseSize];
     memset(buffer,0,sizeof(buffer));
     tcpClient->Recv(buffer,sizeof(buffer));
     getResponse(buffer);
-    delete tcpClient;
+    tcpClient->Disconnect();
     return 0;
 }
 
 Response* HTTPClient::getResponse(char *const buffer) {
-    Response *resp = new Response();
+    unique_ptr<Response> resp(new Response);
     string bufferStr = string(buffer);
     size_t term_pos = bufferStr.find(this->terminator);
     if(term_pos == string::npos) return nullptr;
@@ -48,5 +51,5 @@ Response* HTTPClient::getResponse(char *const buffer) {
     resp->setHeaders(headers);
     string body = bufferStr.substr(headers_end_pos+4,string::npos);
     resp->setBody(body,true);
-    return resp;
+    return resp.get();
 }

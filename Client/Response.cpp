@@ -12,18 +12,17 @@ Response::Response() {
 }
 
 void Response::setBody(string body, bool newRequest) {
-    return;
     if(body.size() == 0) return;
     if(newRequest) this->body.clear();
     this->body += body;
 }
-void Response::setHeaders(string headers_) {
+void Response::setHeaders(string headers) {
    size_t l_pos,k_pos;
    string line;
    string key;
    string value;
-   while((l_pos = headers_.find("\r\n")) != string::npos){
-       line = headers_.substr(0,l_pos);
+   while((l_pos = headers.find("\r\n")) != string::npos){
+       line = headers.substr(0,l_pos);
        k_pos = line.find(":");
        if(k_pos == string::npos) return;
        key = line.substr(0,k_pos);
@@ -34,11 +33,10 @@ void Response::setHeaders(string headers_) {
        }
        this->resHeaders[key] = value;
        cout<<key<<"="<<value<<std::endl;
-       headers_ = headers_.substr(l_pos+1,string::npos);
+       headers = headers.substr(l_pos+1,string::npos);
    }
 }
 void Response::setResponseStatus(string code) {
-    return;
     if(code.size() == 0 or code.size() != 3){
         cout<<"Invalid status code"<<std::endl;
         return;
