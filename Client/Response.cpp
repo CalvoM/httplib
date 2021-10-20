@@ -29,11 +29,8 @@ void Response::setHeaders(string headers) {
        k_pos = line.find(":");
        if(k_pos == string::npos) return;
        key = line.substr(0,k_pos);
-       if(line.at(k_pos+1) == ' '){
-           value = line.substr(k_pos+2,string::npos);
-       }else{
-           value = line.substr(k_pos+1,string::npos);
-       }
+       if(line.at(k_pos+1) == ' ') value = line.substr(k_pos+2,string::npos);
+       else value = line.substr(k_pos+1,string::npos);
        this->resHeaders[key] = value;
        cout<<key<<endl;
        headers = headers.substr(l_pos+terminator.size(),string::npos);
