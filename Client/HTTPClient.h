@@ -5,6 +5,7 @@
 #include <map>
 #include <iostream>
 #include "../sharedlibs/network/netutils.h"
+#include "Response.h"
 
 using std::string;
 using std::map;
@@ -13,11 +14,12 @@ using std::cout;
 
 using Headers = map<string,string>;
 
+
 class HTTPClient{
 public:
     HTTPClient(string baseUrl, string port="80");
     ~HTTPClient(){}
-    int Get(string endpoint);
+    Response Get(string endpoint);
     void SetPort(string port){
         this->port = port;
     }
@@ -27,11 +29,12 @@ private:
     string port;
     Headers requestHeaders;
     Headers responseHeaders;
-    const uint64_t maxHTTPResponseSize = 2048;
+    const uint64_t maxHTTPResponseSize = 102400;
     const string httpMajorVersion="1";
     const string httpMinorVersion="1";
     const string httpVersion = "HTTP/"+httpMajorVersion+"."+httpMinorVersion;
     const string terminator="\r\n";
+    Response getResponse(char* const);
 };
 
 #endif
