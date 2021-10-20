@@ -31,7 +31,6 @@ Response HTTPClient::Get(string endpoint){
     memset(buffer,0,sizeof(buffer));
     tcpClient->Recv(buffer,sizeof(buffer));
     Response resp = getResponse(buffer);
-    cout<<resp.getResponseStatus();
     tcpClient->Disconnect();
     return resp;
 }

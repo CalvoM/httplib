@@ -3,3 +3,4 @@ sample_server/
 sharedlibs
 httpclient
 .idea/
+*.txt
