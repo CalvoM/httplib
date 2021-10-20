@@ -14,9 +14,9 @@ HTTPClient::HTTPClient(string baseUrl,string port){
 Response HTTPClient::Get(string endpoint){
     string message;
     string requestLine = "GET "+endpoint+" "+this->httpVersion+this->terminator;
-    this->requestHeaders["Connection"] = "keep-alive";
+    this->requestHeaders["Connection"] = "close";
     this->requestHeaders["Accept"] = "*/*";
-    this->requestHeaders["Accept-Encoding"] = "*";
+    this->requestHeaders["Accept-Encoding"] = "identity";
     message += requestLine;
     if(!this->requestHeaders.empty()){
         for(auto h:this->requestHeaders){
@@ -28,8 +28,9 @@ Response HTTPClient::Get(string endpoint){
     tcpClient->Connect(this->requestHeaders["Host"],this->port);
     tcpClient->SendString(message);
     char buffer[this->maxHTTPResponseSize];
+    int bytes_recv=0;
     memset(buffer,0,sizeof(buffer));
-    tcpClient->Recv(buffer,sizeof(buffer));
+    bytes_recv = tcpClient->Recv(buffer,sizeof(buffer));
     Response resp = getResponse(buffer);
     tcpClient->Disconnect();
     return resp;
