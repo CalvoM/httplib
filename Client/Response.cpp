@@ -16,6 +16,7 @@ void Response::setBody(string body, bool newRequest) {
     if(body.size() == 0) return;
     if(newRequest) this->body.clear();
     this->body += body;
+    content_encoding_t encoding = this->getContentEncoding();
 }
 void Response::setHeaders(string headers) {
    size_t l_pos,k_pos;
@@ -34,6 +35,7 @@ void Response::setHeaders(string headers) {
            value = line.substr(k_pos+1,string::npos);
        }
        this->resHeaders[key] = value;
+       cout<<key<<endl;
        headers = headers.substr(l_pos+terminator.size(),string::npos);
    }
 }
@@ -50,4 +52,26 @@ void Response::setResponseStatus(string code) {
     }
     this->responseStatus = code;
     return;
+}
+
+content_encoding_t Response::getContentEncoding(){
+    content_encoding_t resEncoding = ContentEncoding::none;
+    auto encodingHeader = this->resHeaders.find("Content-Encoding");
+    if(encodingHeader == this->resHeaders.end()) return resEncoding; //*No content-encoding header
+    auto commaPos = encodingHeader->second.find(",");
+    HeaderValue encoding;
+    if(commaPos == string::npos) encoding = encodingHeader->second;
+    else encoding = encodingHeader->second.substr(0,commaPos); //*incase of multiple encoding choose the first option
+
+    if(encoding == "gzip") resEncoding = ContentEncoding::gzip;
+    else if(encoding == "compress") resEncoding = ContentEncoding::compress;
+    else if(encoding == "deflate") resEncoding = ContentEncoding::deflate;
+    else if(encoding == "br") resEncoding = ContentEncoding::br;
+    else resEncoding = ContentEncoding::unsupported;
+    return resEncoding;
+}
+
+ContentTypeHeader Response::getContentType(){
+    ContentTypeHeader resContentType;
+    resContentType.type = ContentTypes::none;
 }
