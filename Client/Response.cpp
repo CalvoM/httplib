@@ -77,9 +77,14 @@ ContentTypeHeader Response::getContentType(){
     auto contentTypeHeader = this->resHeaders.find("Content-Type");
     if(contentTypeHeader == this->resHeaders.end()) return resContentType; //* No content-type header
     auto slashPos = contentTypeHeader->second.find("/");
+    if(slashPos == string::npos) return resContentType; //* an issue with the header
     HeaderValue type;
     type = contentTypeHeader->second.substr(0,slashPos);
     if(type == "text"){
         resContentType.type = ContentTypes::text;
+    }else{
+        resContentType.type = ContentTypes::unsupported;
     }
+    //TODO: add the extra info passed via this header e.g. charset
+    return resContentType;
 }
