@@ -5,6 +5,7 @@
 #include "Response.h"
 using std::exception;
 using std::stoi;
+using std::endl;
 
 Response::Response() {
     this->body.clear();
@@ -21,7 +22,8 @@ void Response::setHeaders(string headers) {
    string line;
    string key;
    string value;
-   while((l_pos = headers.find("\r\n")) != string::npos){
+   string terminator = "\r\n";
+   while((l_pos = headers.find(terminator)) != string::npos){
        line = headers.substr(0,l_pos);
        k_pos = line.find(":");
        if(k_pos == string::npos) return;
@@ -32,7 +34,7 @@ void Response::setHeaders(string headers) {
            value = line.substr(k_pos+1,string::npos);
        }
        this->resHeaders[key] = value;
-       headers = headers.substr(l_pos+1,string::npos);
+       headers = headers.substr(l_pos+terminator.size(),string::npos);
    }
 }
 void Response::setResponseStatus(string code) {

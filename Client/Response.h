@@ -15,6 +15,16 @@ using std::cout;
 
 using Headers = map<string,string>;
 
+//TODO: check the mimetypes used and see how to support them
+
+enum class ContentTypes{
+
+};
+enum class ContentEncoding{
+
+};
+
+
 class Response{
 public:
     Response();
