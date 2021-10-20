@@ -74,4 +74,12 @@ content_encoding_t Response::getContentEncoding(){
 ContentTypeHeader Response::getContentType(){
     ContentTypeHeader resContentType;
     resContentType.type = ContentTypes::none;
+    auto contentTypeHeader = this->resHeaders.find("Content-Type");
+    if(contentTypeHeader == this->resHeaders.end()) return resContentType; //* No content-type header
+    auto slashPos = contentTypeHeader->second.find("/");
+    HeaderValue type;
+    type = contentTypeHeader->second.substr(0,slashPos);
+    if(type == "text"){
+        resContentType.type = ContentTypes::text;
+    }
 }
