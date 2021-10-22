@@ -15,8 +15,16 @@ Response::Response() {
 void Response::setBody(string body, bool newRequest) {
     if(body.size() == 0) return;
     if(newRequest) this->body.clear();
-    this->body += body;
     content_encoding_t encoding = this->getContentEncoding();
+    ContentTypeHeader contentType = this->getContentType();
+    switch(encoding){
+        case ContentEncoding::none:
+            this->body = body;
+            break;
+        case ContentEncoding::unsupported:
+        default:
+            cout<<"Content-Encoding is unsupported as yet";
+    }
 }
 void Response::setHeaders(string headers) {
    size_t l_pos,k_pos;
@@ -32,7 +40,6 @@ void Response::setHeaders(string headers) {
        if(line.at(k_pos+1) == ' ') value = line.substr(k_pos+2,string::npos);
        else value = line.substr(k_pos+1,string::npos);
        this->resHeaders[key] = value;
-       cout<<key<<endl;
        headers = headers.substr(l_pos+terminator.size(),string::npos);
    }
 }
@@ -82,6 +89,12 @@ ContentTypeHeader Response::getContentType(){
     }else{
         resContentType.type = ContentTypes::unsupported;
     }
-    //TODO: add the extra info passed via this header e.g. charset
+    auto commaPos = contentTypeHeader->second.find(";");
+    if(commaPos = string::npos) return resContentType;
+    HeaderValue extra = contentTypeHeader->second.substr(commaPos+1);
+    auto equalPos = extra.find("=");
+    if(equalPos == string::npos) return resContentType;
+    HeaderValue key = extra.substr(0,equalPos);
+    resContentType.description[key] = extra.substr(equalPos+1);
     return resContentType;
 }
