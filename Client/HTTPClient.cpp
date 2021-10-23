@@ -16,7 +16,7 @@ Response HTTPClient::Get(string endpoint){
     string requestLine = "GET "+endpoint+" "+this->httpVersion+this->terminator;
     this->requestHeaders["Connection"] = "close";
     this->requestHeaders["Accept"] = "*/*";
-    this->requestHeaders["Accept-Encoding"] = "identity";
+    this->requestHeaders["Accept-Encoding"] = "*";
     message += requestLine;
     if(!this->requestHeaders.empty()){
         for(auto h:this->requestHeaders){

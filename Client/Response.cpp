@@ -1,7 +1,3 @@
-//
-// Created by d1r3ct0r on 10/14/21.
-//
-
 #include "Response.h"
 using std::exception;
 using std::stoi;
@@ -17,9 +13,19 @@ void Response::setBody(string body, bool newRequest) {
     if(newRequest) this->body.clear();
     content_encoding_t encoding = this->getContentEncoding();
     ContentTypeHeader contentType = this->getContentType();
+    size_t nlPos;
     switch(encoding){
         case ContentEncoding::none:
             this->body = body;
+            break;
+        case ContentEncoding::gzip:
+            nlPos = body.find("\r\n");
+            if(nlPos == string::npos){
+                cout<<"GZIP parsing error"<<endl;
+                break;
+            }
+            body = body.substr(nlPos+2);
+            decompressGZIP(body);
             break;
         case ContentEncoding::unsupported:
         default:
@@ -97,4 +103,14 @@ ContentTypeHeader Response::getContentType(){
     HeaderValue key = extra.substr(0,equalPos);
     resContentType.description[key] = extra.substr(equalPos+1);
     return resContentType;
+}
+
+string Response::decompressGZIP(string body){
+    z_stream strm = {0};
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    strm.next_in = Z_NULL;
+    strm.avail_in = 0;
+    return "";
 }

@@ -8,6 +8,7 @@
 #include <map>
 #include <iostream>
 #include "../sharedlibs/network/netutils.h"
+#include <zlib.h>
 
 using std::string;
 using std::map;
@@ -61,6 +62,7 @@ public:
     Headers getHeaders() const{
         return this->resHeaders;
     }
+    string decompressGZIP(string);
 private:
     Headers resHeaders;
     string responseStatus;
