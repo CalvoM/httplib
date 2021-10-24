@@ -110,7 +110,22 @@ string Response::decompressGZIP(string body){
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
-    strm.next_in = Z_NULL;
-    strm.avail_in = 0;
+    strm.next_in = (unsigned char*)body.c_str();
+    strm.avail_in = sizeof(body.c_str());
+    int z_status = inflate(&strm,Z_NO_FLUSH);
+    cout<<z_status;
+
+    switch( z_status )
+    {
+        case Z_OK:
+        case Z_STREAM_END:
+        case Z_BUF_ERROR:
+            break;
+        default:
+            inflateEnd( &strm );
+            fprintf( stderr, "Gzip error %d.\n", z_status);
+            return "";
+    }
+
     return "";
 }
