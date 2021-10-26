@@ -1,4 +1,5 @@
 #include "Response.h"
+#include <math.h>
 using std::exception;
 using std::stoi;
 using std::endl;
@@ -13,19 +14,15 @@ void Response::setBody(string body, bool newRequest) {
     if(newRequest) this->body.clear();
     content_encoding_t encoding = this->getContentEncoding();
     ContentTypeHeader contentType = this->getContentType();
-    size_t nlPos;
     switch(encoding){
         case ContentEncoding::none:
             this->body = body;
             break;
         case ContentEncoding::gzip:
-            nlPos = body.find("\r\n");
-            if(nlPos == string::npos){
-                cout<<"GZIP parsing error"<<endl;
-                break;
-            }
-            body = body.substr(nlPos+2);
-            decompressGZIP(body);
+        case ContentEncoding::br:
+        case ContentEncoding::compress:
+        case ContentEncoding::deflate:
+            cout<<"Response Content-Encoding Not supported!"<<endl;
             break;
         case ContentEncoding::unsupported:
         default:
@@ -105,21 +102,41 @@ ContentTypeHeader Response::getContentType(){
     return resContentType;
 }
 
-string Response::decompressGZIP(string body){
+//* compressed data manipulation 
+//! Needs more work
+//TODO improve decompression process
+string Response::decompressGZIP(string body, int size){
+    unsigned char* data = new unsigned char[size];
+    unsigned int i=0;
+    while(size>0){
+        data[i] = body.c_str()[i];
+        size--;
+        i++;
+    }
     z_stream strm = {0};
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
-    strm.next_in = (unsigned char*)body.c_str();
-    strm.avail_in = sizeof(body.c_str());
-    int z_status = inflate(&strm,Z_NO_FLUSH);
+    strm.next_in = data;
+    strm.avail_in = size;
+    int z_status = inflateInit2(&strm,MAX_WBITS|32);
     cout<<z_status;
-
+    int ret = -1;
     switch( z_status )
     {
         case Z_OK:
         case Z_STREAM_END:
         case Z_BUF_ERROR:
+            z_status = inflate(&strm,Z_FINISH);
+            if (z_status == Z_STREAM_END){
+                ret = strm.total_out;
+                cout<<ret;
+            }
+            else{
+            cout<<"END"<<endl;
+            inflateEnd(&strm);
+            return "";
+            }
             break;
         default:
             inflateEnd( &strm );
@@ -128,4 +145,14 @@ string Response::decompressGZIP(string body){
     }
 
     return "";
+}
+
+unsigned int Response::hexToInt(string hex){
+    int power = hex.size() -1;
+    unsigned int finalNum=0;
+    for(auto c: hex){
+        finalNum += (c-'0')*int(pow(16,power));
+        power--;
+    }
+    return finalNum;
 }

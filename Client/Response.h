@@ -62,10 +62,11 @@ public:
     Headers getHeaders() const{
         return this->resHeaders;
     }
-    string decompressGZIP(string);
+    string decompressGZIP(string,int);
 private:
     Headers resHeaders;
     string responseStatus;
     string body;
+    unsigned int hexToInt(string);
 };
 #endif //HTTPLIB_RESPONSE_H
