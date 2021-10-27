@@ -16,6 +16,7 @@ jobs:
     - name: configure
       run: |
         sudo apt install zlib1g
+        git submodule update --init --remote
     - name: make
       run: make
     - name: build
