@@ -8,6 +8,7 @@ HTTPClient::HTTPClient(string baseUrl,string port){
     this->requestHeaders["Host"] = baseUrl;
     this->requestHeaders["User-Agent"] = "bazeengaHTTPLIB";
     this->port = port;
+    this->tcpClient = nullptr;
 }
 
 //Sends GET request to the endpoint
@@ -40,7 +41,7 @@ Response HTTPClient::Get(string endpoint, ParamsData *params){
     char buffer[this->maxHTTPResponseSize];
     int bytes_recv=0;
     memset(buffer,0,sizeof(buffer));
-    bytes_recv = tcpClient->Recv(buffer,sizeof(buffer));
+    tcpClient->Recv(buffer,sizeof(buffer)); //*could use the number of bytes returned later
     Response resp = getResponse(buffer);
     tcpClient->Disconnect();
     return resp;

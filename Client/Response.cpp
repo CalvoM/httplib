@@ -30,14 +30,14 @@ void Response::setBody(string body, bool newRequest) {
     }
 }
 void Response::setHeaders(string headers) {
-   size_t l_pos,k_pos;
    string line;
    string key;
    string value;
    string terminator = "\r\n";
+   size_t l_pos;
    while((l_pos = headers.find(terminator)) != string::npos){
        line = headers.substr(0,l_pos);
-       k_pos = line.find(":");
+       size_t k_pos = line.find(":");
        if(k_pos == string::npos) return;
        key = line.substr(0,k_pos);
        if(line.at(k_pos+1) == ' ') value = line.substr(k_pos+2,string::npos);
@@ -52,7 +52,7 @@ void Response::setResponseStatus(string code) {
         return;
     }
     try{
-        stoi(code);
+        int i = stoi(code);
     }catch(const exception& e){
         cout<<e.what();
         return;
@@ -133,7 +133,6 @@ string Response::decompressGZIP(string body, int size){
                 cout<<ret;
             }
             else{
-            cout<<"END"<<endl;
             inflateEnd(&strm);
             return "";
             }
