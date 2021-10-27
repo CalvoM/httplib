@@ -3,23 +3,25 @@
 
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <iostream>
 #include "../sharedlibs/network/netutils.h"
 #include "Response.h"
 
 using std::string;
 using std::map;
+using std::unordered_map;
 using std::memset;
 using std::cout;
 
 using Headers = map<string,string>;
-
+using ParamsData = unordered_map<string,string>;
 
 class HTTPClient{
 public:
     HTTPClient(string baseUrl, string port="80");
     ~HTTPClient(){}
-    Response Get(string endpoint);
+    Response Get(string endpoint, ParamsData* params=nullptr);
     void SetPort(string port){
         this->port = port;
     }

@@ -11,7 +11,17 @@ HTTPClient::HTTPClient(string baseUrl,string port){
 }
 
 //Sends GET request to the endpoint
-Response HTTPClient::Get(string endpoint){
+Response HTTPClient::Get(string endpoint, ParamsData *params){
+    if (params != nullptr){ //params to be added to the url
+        endpoint += "?";
+        for(auto p:*params){
+            endpoint+=p.first;
+            endpoint+="=";
+            endpoint+=p.second;
+            endpoint+="&";
+        }
+        endpoint = endpoint.substr(0,endpoint.size()-1);
+    }
     string message;
     string requestLine = "GET "+endpoint+" "+this->httpVersion+this->terminator;
     this->requestHeaders["Connection"] = "close";
