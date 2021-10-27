@@ -121,15 +121,15 @@ string Response::decompressGZIP(string body, int size){
     strm.avail_in = size;
     int z_status = inflateInit2(&strm,MAX_WBITS|32);
     cout<<z_status;
-    int ret = -1;
     switch( z_status )
     {
         case Z_OK:
         case Z_STREAM_END:
         case Z_BUF_ERROR:
+        {
             z_status = inflate(&strm,Z_FINISH);
             if (z_status == Z_STREAM_END){
-                ret = strm.total_out;
+                int ret = strm.total_out;
                 cout<<ret;
             }
             else{
@@ -137,6 +137,7 @@ string Response::decompressGZIP(string body, int size){
             return "";
             }
             break;
+        }
         default:
             inflateEnd( &strm );
             fprintf( stderr, "Gzip error %d.\n", z_status);

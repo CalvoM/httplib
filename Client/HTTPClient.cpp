@@ -39,7 +39,6 @@ Response HTTPClient::Get(string endpoint, ParamsData *params){
     tcpClient->Connect(this->requestHeaders["Host"],this->port);
     tcpClient->SendString(message);
     char buffer[this->maxHTTPResponseSize];
-    int bytes_recv=0;
     memset(buffer,0,sizeof(buffer));
     tcpClient->Recv(buffer,sizeof(buffer)); //*could use the number of bytes returned later
     Response resp = getResponse(buffer);
