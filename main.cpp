@@ -6,10 +6,8 @@ int main(int argc, char **argv){
     ParamsData p;
     p["marco"] = "polo";
     p["got"] = "good";
-    auto resp = client.Get("/",&p);
+    Auth auth = make_pair("test","123£");
+    auto resp = client.Get("/",&p,&auth);
     string body = resp.getBody();
     cout<<body;
-    string test = "test:123£";
-    string encoded = base64_encode(test);
-    cout<<encoded;
 }

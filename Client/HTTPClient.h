@@ -13,12 +13,15 @@ using std::string;
 using std::map;
 using std::unordered_map;
 using std::pair;
+using std::make_pair;
 using std::memset;
 using std::cout;
 
 using Headers = map<string,string>;
 using ParamsData = unordered_map<string,string>;
-using Auth = pair<string,string>;
+using Username = string;
+using Password = string;
+using Auth = pair<Username,Password>;
 
 class HTTPClient{
 public:
