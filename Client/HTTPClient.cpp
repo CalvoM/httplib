@@ -1,5 +1,4 @@
 #include "HTTPClient.h"
-#include "../utils/base64.h"
 #include <memory>
 
 using std::unique_ptr;
@@ -25,8 +24,7 @@ Response HTTPClient::Get(string endpoint, ParamsData *params, Auth* auth){
         endpoint = endpoint.substr(0,endpoint.size()-1);
     }
     if(auth != nullptr){
-        string secret = auth->first+":"+auth->second;
-        this->requestHeaders["Authorization"] = "Basic "+base64_encode(secret);
+        this->requestHeaders["Authorization"] = auth->getHeaderValue();
     }
     string message;
     string requestLine = "GET "+endpoint+" "+this->httpVersion+this->terminator;

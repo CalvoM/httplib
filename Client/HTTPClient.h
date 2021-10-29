@@ -8,6 +8,7 @@
 #include <iostream>
 #include "../sharedlibs/network/netutils.h"
 #include "Response.h"
+#include "BasicAuth.h"
 
 using std::string;
 using std::map;
@@ -21,7 +22,6 @@ using Headers = map<string,string>;
 using ParamsData = unordered_map<string,string>;
 using Username = string;
 using Password = string;
-using Auth = pair<Username,Password>;
 
 class HTTPClient{
 public:
@@ -32,6 +32,7 @@ public:
         this->port = port;
     }
 private:
+    Auth *auth;
     string baseUrl;
     TCPClient *tcpClient;
     string port;

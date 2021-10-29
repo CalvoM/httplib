@@ -14,6 +14,9 @@ void Response::setBody(string body, bool newRequest) {
     if(newRequest) this->body.clear();
     content_encoding_t encoding = this->getContentEncoding();
     ContentTypeHeader contentType = this->getContentType();
+    for(auto d:contentType.description){
+        cout<<d.first<<" "<<d.second;
+    }
     switch(encoding){
         case ContentEncoding::none:
             this->body = body;
