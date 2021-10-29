@@ -4,28 +4,35 @@
 #include <string>
 #include <map>
 #include <unordered_map>
+#include <utility>
 #include <iostream>
 #include "../sharedlibs/network/netutils.h"
 #include "Response.h"
+#include "BasicAuth.h"
 
 using std::string;
 using std::map;
 using std::unordered_map;
+using std::pair;
+using std::make_pair;
 using std::memset;
 using std::cout;
 
 using Headers = map<string,string>;
 using ParamsData = unordered_map<string,string>;
+using Username = string;
+using Password = string;
 
 class HTTPClient{
 public:
     HTTPClient(string baseUrl, string port="80");
     ~HTTPClient(){}
-    Response Get(string endpoint, ParamsData* params=nullptr);
+    Response Get(string endpoint, ParamsData* params=nullptr, Auth *auth=nullptr);
     void SetPort(string port){
         this->port = port;
     }
 private:
+    Auth *auth;
     string baseUrl;
     TCPClient *tcpClient;
     string port;

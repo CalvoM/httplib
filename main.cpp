@@ -1,11 +1,22 @@
 #include "Client/HTTPClient.h"
+#include "utils/base64.h"
+
+string getUserName(){
+    return "Test";
+}
+
+string getPassword(){
+    return "1234";
+}
 
 int main(int argc, char **argv){
-    HTTPClient client("neverssl.com");
+    HTTPClient client("httpbin.org");
     ParamsData p;
-    p["marco"] = "polo";
-    p["got"] = "good";
-    auto resp = client.Get("/",&p);
+    string name = getUserName();
+    string pass = getPassword();
+    BasicAuth auth(name,pass);
+    auto resp = client.Get("/basic-auth/"+name+"/"+pass,nullptr,&auth);
     string body = resp.getBody();
-    cout<<body;
+    auto headers = resp.getHeaders();
+    cout<<body<<std::endl;
 }

@@ -12,7 +12,7 @@ HTTPClient::HTTPClient(string baseUrl,string port){
 }
 
 //Sends GET request to the endpoint
-Response HTTPClient::Get(string endpoint, ParamsData *params){
+Response HTTPClient::Get(string endpoint, ParamsData *params, Auth* auth){
     if (params != nullptr){ //params to be added to the url
         endpoint += "?";
         for(auto p:*params){
@@ -22,6 +22,9 @@ Response HTTPClient::Get(string endpoint, ParamsData *params){
             endpoint+="&";
         }
         endpoint = endpoint.substr(0,endpoint.size()-1);
+    }
+    if(auth != nullptr){
+        this->requestHeaders["Authorization"] = auth->getHeaderValue();
     }
     string message;
     string requestLine = "GET "+endpoint+" "+this->httpVersion+this->terminator;
