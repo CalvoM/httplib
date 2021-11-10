@@ -1,6 +1,8 @@
 #include "Client/HTTPClient.h"
 #include "utils/base64.h"
+#include <openssl/md5.h>
 
+using std::endl;
 string getUserName(){
     return "Test";
 }
@@ -15,8 +17,11 @@ int main(int argc, char **argv){
     string name = getUserName();
     string pass = getPassword();
     BasicAuth auth(name,pass);
-    auto resp = client.Get("/basic-auth/"+name+"/"+pass,nullptr,&auth);
+    auto resp = client.Get("/digest-auth/auth/"+name+"/"+pass,nullptr,&auth);
     string body = resp.getBody();
     auto headers = resp.getHeaders();
-    cout<<body<<std::endl;
+    for(auto h:headers){
+        cout<<h.first<<" : "<<h.second<<endl;
+    }
+    cout<<"RESPONSE STATUS: "<<resp.getResponseStatus();
 }
