@@ -10,8 +10,8 @@ using DigestAuthParams = std::map<string, string>;
 class DigestAuth : public Auth{
     public:
         DigestAuth(DigestAuthParams *params=nullptr);
-        ~DigestAuth();
         string getHeaderValue();
+        ~DigestAuth(){}
     private:
         DigestAuthParams params;
         bool isParamsEmpty;
