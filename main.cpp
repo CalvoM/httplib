@@ -31,4 +31,6 @@ int main(int argc, char **argv){
         cout<<h.first<<" : "<<h.second<<endl;
     }
     cout<<"RESPONSE STATUS: "<<resp.getResponseStatus();
-}
+    cout<<"RESPONSE BODY: "<<body<<endl;
+} 
+
