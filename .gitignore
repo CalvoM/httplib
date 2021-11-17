@@ -4,3 +4,5 @@ sharedlibs
 httpclient
 .idea/
 *.txt
+*.swp
+httpclient_test
