@@ -9,6 +9,7 @@
 #include "../sharedlibs/network/netutils.h"
 #include "Response.h"
 #include "BasicAuth.h"
+#include "DigestAuth.h"
 
 using std::string;
 using std::map;
