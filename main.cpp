@@ -1,17 +1,14 @@
 #include "Client/HTTPClient.h"
 
 using std::endl;
-string getUserName(){
-    return "Test";
-}
+string getUserName() { return "Test"; }
 
-string getPassword(){
-    return "1234";
-}
+string getPassword() { return "1234"; }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
     HTTPClient client("httpbin.org");
-    string endpoint = "/digest-auth/auth/"+getUserName()+"/"+getPassword();
+    string endpoint =
+        "/digest-auth/auth/" + getUserName() + "/" + getPassword();
     ParamsData p;
     DigestAuthParams dp;
     dp["username"] = getUserName();
@@ -24,13 +21,12 @@ int main(int argc, char **argv){
     dp["algorithm"] = "MD5";
     dp["uri"] = endpoint;
     DigestAuth auth(&dp);
-    auto resp = client.Get(endpoint,nullptr,&auth);
+    auto resp = client.Get(endpoint, nullptr, &auth);
     string body = resp.getBody();
     auto headers = resp.getHeaders();
-    for(auto h:headers){
-        cout<<h.first<<" : "<<h.second<<endl;
+    for (auto h : headers) {
+        cout << h.first << " : " << h.second << endl;
     }
-    cout<<"RESPONSE STATUS: "<<resp.getResponseStatus();
-    cout<<"RESPONSE BODY: "<<body<<endl;
-} 
-
+    cout << "RESPONSE STATUS: " << resp.getResponseStatus();
+    cout << "RESPONSE BODY: " << body << endl;
+}

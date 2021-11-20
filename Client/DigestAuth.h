@@ -7,14 +7,18 @@
 using std::string;
 using DigestAuthParams = std::map<string, string>;
 
-class DigestAuth : public Auth{
-    public:
-        DigestAuth(DigestAuthParams *params=nullptr);
-        string getHeaderValue();
-        ~DigestAuth(){}
-    private:
-        DigestAuthParams params;
-        bool isParamsEmpty;
+class DigestAuth : public Auth {
+  public:
+    DigestAuth(DigestAuthParams *params = nullptr);
+    string getHeaderValue();
+    string getA1Hash();
+    string getA2Hash();
+    ~DigestAuth() {}
+
+  private:
+    DigestAuthParams params;
+    bool isParamsEmpty;
+    string getItemFromListStr(string, string);
 };
 
 #endif

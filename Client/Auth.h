@@ -4,10 +4,10 @@
 #include <string>
 using std::string;
 
-class Auth{
-    public:
-        Auth(){};
-        virtual string getHeaderValue()=0;
-        ~Auth(){}
+class Auth {
+  public:
+    Auth(){};
+    virtual string getHeaderValue() = 0;
+    ~Auth() {}
 };
 #endif
