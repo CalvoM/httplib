@@ -1,4 +1,7 @@
 #include "DigestAuth.h"
+#include <utility>
+
+using std::make_pair;
 
 DigestAuth::DigestAuth(DigestAuthParams *params) {
     if (params) {
@@ -11,9 +14,14 @@ DigestAuth::DigestAuth(DigestAuthParams *params) {
 
 string DigestAuth::getHeaderValue() { return ""; }
 
-string DigestAuth::getA1Hash() {}
+pair<string, ErrorCode> DigestAuth::getA1Hash() {
+    if (isParamsEmpty)
+        return make_pair("No params provided", ErrorCode::empty_params);
+    if (this->params.find("algorithm") == this->params.end())
+        return make_pair("Algorithm missing", ErrorCode::missing_params_value);
+}
 
-string DigestAuth::getA2Hash() {}
+pair<string, ErrorCode> DigestAuth::getA2Hash() {}
 string DigestAuth::getItemFromListStr(string data, string token) {
     size_t tokenPos = data.find(token);
     if (tokenPos == string::npos) {
@@ -21,4 +29,10 @@ string DigestAuth::getItemFromListStr(string data, string token) {
     } else {
         return data.substr(0, tokenPos + 1);
     }
+}
+
+bool DigestAuth::isInParams(string key) {
+    if (this->params.find(key) == this->params.end())
+        return false;
+    return true;
 }
