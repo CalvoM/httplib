@@ -24,7 +24,7 @@ string DigestAuth::getHeaderValue() { return ""; }
 pair<string, ErrorCode> DigestAuth::getA1Hash() {
     if (isParamsEmpty)
         return make_pair("No params provided", ErrorCode::empty_params);
-    if (this->params.find("algorithm") == this->params.end())
+    if (this->isInParams("algorithm") == false)
         return make_pair("Algorithm missing", ErrorCode::missing_params_value);
     string algorithm = this->params["algorithm"];
     if (httplib::Contains(this->nonSessionAlgorithms, algorithm) == false) {
@@ -32,7 +32,22 @@ pair<string, ErrorCode> DigestAuth::getA1Hash() {
             return make_pair("Algorithm not supported",
                              ErrorCode::invalid_algorithm);
     }
+    if (this->isInParams("username") == false ||
+        this->isInParams("password") == false)
+        return make_pair("Username/Password missing",
+                         ErrorCode::missing_params_value);
+    if (this->isInParams("realm") == false)
+        return make_pair("Realm missing", ErrorCode::missing_params_value);
     string digest;
+    if (httplib::Contains(this->nonSessionAlgorithms, algorithm) == true) {
+        string src = this->params["username"] + ":" + this->params["realm"] +
+                     ":" + this->params["password"];
+        if (algorithm == "MD5")
+            digest = getMD5Hash(src);
+        else if (algorithm == "SHA-256" or algorithm == "SHA-512-256")
+            digest = getSHA256Hash(src);
+    } else {
+    }
     return make_pair(digest, ErrorCode::ok);
 }
 

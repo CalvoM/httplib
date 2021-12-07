@@ -13,6 +13,8 @@ TEST_CASE("MD5", "Testing MD5 operations for the lib") {
     d["dragon"] = "8621ffdbc5698829397d97767ac13db3";
     d["shadow"] = "3bf1114a986ba87ed28fc1b5884fc2f8";
     d["matrix"] = "21b72c0b7adc5c7b4a50ffcb90d92dd6";
+    d["Mufasa:testrealm@host.com:Circle Of Life"] =
+        "939e7578ed9e3c518a452acee763bce9";
     for (auto d_ : d) {
         REQUIRE(getMD5Hash(d_.first) == d_.second);
     }
