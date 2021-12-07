@@ -11,7 +11,12 @@ using std::pair;
 using std::string;
 using std::vector;
 using DigestAuthParams = map<string, string>;
-enum class ErrorCode { missing_params_value, empty_params, ok };
+enum class ErrorCode {
+    missing_params_value,
+    empty_params,
+    invalid_algorithm,
+    ok
+};
 
 class DigestAuth : public Auth {
   public:
