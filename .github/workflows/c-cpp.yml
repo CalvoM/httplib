@@ -15,7 +15,12 @@ jobs:
     - uses: actions/checkout@v2
     - name: configure
       run: |
-        sudo apt install libcrypto++6 libcrypto++-utils libcrypto++-dev libcrypto++6-dbg
+        wget https://github.com/weidai11/cryptopp/releases/download/CRYPTOPP_8_6_0/cryptopp860.zip
+        unzip cryptopp860.zip cryptopp
+        make static dynamic cryptest.exe
+        cryptest.exe v
+        make libcryptopp.a libcryptopp.so cryptest.exe
+        sudo make install PREFIX=/usr/local
         sudo apt install zlib1g
         git submodule update --init --remote
     - name: make
