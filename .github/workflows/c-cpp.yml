@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: configure
       run: |
-        sudo apt install libcrypto++8 libcrypto++8-dbg libcrypto++-dev
+        sudo apt install libcrypto++8 libcrypto++-dev
         sudo apt install zlib1g
         git submodule update --init --remote
     - name: make
