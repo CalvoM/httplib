@@ -16,7 +16,7 @@ jobs:
     - name: configure
       run: |
         wget https://github.com/weidai11/cryptopp/releases/download/CRYPTOPP_8_6_0/cryptopp860.zip
-        unzip cryptopp860.zip cryptopp
+        unzip cryptopp860.zip -d cryptop
         make static dynamic cryptest.exe
         cryptest.exe v
         make libcryptopp.a libcryptopp.so cryptest.exe
