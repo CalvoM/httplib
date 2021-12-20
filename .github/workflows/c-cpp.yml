@@ -25,8 +25,7 @@ jobs:
         make static dynamic cryptest.exe
     - name: test_cryptopp_build
       run: |
-        cryptest.exe v
-        make libcryptopp.a libcryptopp.so cryptest.exe
+        ./cryptest.exe v
         sudo make install PREFIX=/usr/local
         cd ..
     - name: configure submodules
