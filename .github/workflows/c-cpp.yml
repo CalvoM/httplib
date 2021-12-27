@@ -25,6 +25,7 @@ jobs:
         make static dynamic cryptest.exe
     - name: test_cryptopp_build
       run: |
+        echo $(pwd)
         ./cryptest.exe v
         sudo make install PREFIX=/usr/local
         cd ..
