@@ -17,4 +17,4 @@ test:
 	@./$(test_prog) -s -r console
 
 clean:
-	@rm $(prog) $(valgrind_log)
+	@rm $(prog) cryptopp -rf
