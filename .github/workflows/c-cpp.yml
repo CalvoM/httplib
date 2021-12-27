@@ -26,6 +26,7 @@ jobs:
     - name: test_cryptopp_build
       run: |
         echo $(pwd)
+        cd cryptopp
         ./cryptest.exe v
         sudo make install PREFIX=/usr/local
         cd ..
