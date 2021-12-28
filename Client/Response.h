@@ -4,26 +4,22 @@
 
 #ifndef HTTPLIB_RESPONSE_H
 #define HTTPLIB_RESPONSE_H
-#include <string>
-#include <map>
-#include <iostream>
 #include "../sharedlibs/network/netutils.h"
+#include <iostream>
+#include <map>
+#include <string>
 #include <zlib.h>
 
-using std::string;
-using std::map;
 using std::cout;
+using std::map;
+using std::string;
 
-//TODO: check the mimetypes used and see how to support them
-//TODO: application,audio,example,font,image,model,video
-enum class ContentTypes{
-    none=-1,
-    unsupported,
-    text
-};
+// TODO: check the mimetypes used and see how to support them
+// TODO: application,audio,example,font,image,model,video
+enum class ContentTypes { none = -1, unsupported, text };
 
-enum class ContentEncoding{
-    none=-1,
+enum class ContentEncoding {
+    none = -1,
     unsupported,
     gzip,
     compress,
@@ -36,37 +32,31 @@ using HeaderKey = string;
 using MIMEType = string;
 using content_encoding_t = enum ContentEncoding;
 using content_type_t = enum ContentTypes;
-using Headers = map<HeaderKey,HeaderValue>;
-using ContentTypeExtra = map<string,string>;
+using Headers = map<HeaderKey, HeaderValue>;
+using ContentTypeExtra = map<string, string>;
 
-struct ContentTypeHeader{
+struct ContentTypeHeader {
     content_type_t type;
     ContentTypeExtra description;
 };
 
-
-class Response{
-public:
+class Response {
+  public:
     Response();
     void setHeaders(string);
     void setResponseStatus(string);
-    void setBody(string,bool);
+    void setBody(string, bool);
     ContentTypeHeader getContentType();
     content_encoding_t getContentEncoding();
-    string getBody() const{
-        return this->body;
-    }
-    string getResponseStatus() const{
-        return this->responseStatus;
-    }
-    Headers getHeaders() const{
-        return this->resHeaders;
-    }
-    string decompressGZIP(string,int);
-private:
+    string getBody() const { return this->body; }
+    string getResponseStatus() const { return this->responseStatus; }
+    Headers getHeaders() const { return this->resHeaders; }
+    string decompressGZIP(string, int);
+
+  private:
     Headers resHeaders;
     string responseStatus;
     string body;
     unsigned int hexToInt(string);
 };
-#endif //HTTPLIB_RESPONSE_H
+#endif // HTTPLIB_RESPONSE_H

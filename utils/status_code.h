@@ -1,6 +1,6 @@
 #ifndef STATUS_CODE_H_
 #define STATUS_CODE_H_
-enum class StatusCode{
+enum class StatusCode {
     info_continue = 100,
     info_switching_protocol,
     info_processing,
@@ -21,16 +21,16 @@ enum class StatusCode{
     redirection_see_other,
     redirection_not_modified,
     redirection_use_proxy,
-    redirection_temporary_redirect=307,
+    redirection_temporary_redirect = 307,
     redirection_permanent_redirect,
-    client_error_bad_request=400,
+    client_error_bad_request = 400,
     client_error_unauthorized,
     client_error_payment_required,
     client_error_forbidden,
     client_error_not_found,
     client_error_method_not_allowed,
     client_error_not_acceptable,
-    client_error_proxy_authentication_required  
+    client_error_proxy_authentication_required
 };
 
 #endif

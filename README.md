@@ -4,6 +4,38 @@
 
 Library for HTTP operations in C++.
 
+## Build and run
+
+To build the library
+```
+make build
+```
+
+To run the sample code in the library
+```sh
+make run
+```
+
+## Testing
+
+```
+make test
+```
+
+## Styling
+
+```
+make style
+```
+
+## Memory management
+
+```
+chmod +x ./check_memory.sh
+./check_memory.sh
+```
+
 ## Additional Libraries
 
--   [Zlib](https://zlib.net) - After download, just run the tests and then install the libraries.
+-   [Zlib](https://zlib.net) 
+-   [Cryptopp](https://github.com/weidai11/cryptopp/blob/master/Install.txt)

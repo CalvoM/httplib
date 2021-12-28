@@ -16,5 +16,8 @@ test:
 	@g++ tests/*.cpp $(cflags) -o $(test_prog)
 	@./$(test_prog) -s -r console
 
+style:
+	find . -iname "*.h" -o -iname "*.cpp" | xargs clang-format -i
+
 clean:
 	@rm $(prog) cryptopp -rf
