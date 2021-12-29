@@ -35,6 +35,10 @@ chmod +x ./check_memory.sh
 ./check_memory.sh
 ```
 
+## Pre-commit hooks
+The *scripts/* directory contains pre-commits hooks for git.
+
+Copy *`pre-*`* scripts into the **.git/hooks/** folder.
 ## Additional Libraries
 
 -   [Zlib](https://zlib.net) 

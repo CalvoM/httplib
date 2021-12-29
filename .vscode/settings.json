@@ -45,5 +45,12 @@
     "bold": false,
     "italic": false
   }
+],
+"makefile.launchConfigurations": [
+  {
+    "cwd": "/home/d1r3ct0r/Documents/Coding/Projects/httplib",
+    "binaryPath": "/home/d1r3ct0r/Documents/Coding/Projects/httplib/httpclient",
+    "binaryArgs": []
+  }
 ]
 }

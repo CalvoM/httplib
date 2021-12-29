@@ -6,3 +6,4 @@ httpclient
 *.txt
 *.swp
 httpclient_test
+.vscode/*.log
