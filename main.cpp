@@ -14,19 +14,24 @@ int main(int argc, char **argv) {
     dp["username"] = getUserName();
     dp["password"] = getPassword();
     dp["realm"] = "me@kennethreitz.com";
-    dp["nonce"] = "edf1b8edeb7715866a369bff47879b9d";
-    dp["uri"] = "/";
-    dp["opaque"] = "0a5e8548048594ae37e1acc4921f5664";
-    dp["qop"] = "auth";
+    dp["nonce"] = "42116d2e40dd34c9db62b11506acc3d9";
+    dp["opaque"] = "2e2e829f23f25f4a5795fa16dcbe2d0c";
+    dp["qop"] = "auth,auth-int";
     dp["algorithm"] = "MD5";
     dp["uri"] = endpoint;
+    dp["method"] = "GET";
     DigestAuth auth(&dp);
-    auto resp = client.Get(endpoint, nullptr, &auth);
+    Response resp;
+    ErrorCode err;
+    std::tie(resp, err) = client.Get(endpoint, nullptr, &auth);
+    if (err != ErrorCode::ok) {
+        return -1;
+    }
     string body = resp.getBody();
     auto headers = resp.getHeaders();
     for (auto h : headers) {
         cout << h.first << " : " << h.second << endl;
     }
-    cout << "RESPONSE STATUS: " << resp.getResponseStatus();
+    cout << "RESPONSE STATUS: " << resp.getResponseStatus() << endl;
     cout << "RESPONSE BODY: " << body << endl;
 }

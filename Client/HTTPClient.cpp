@@ -12,19 +12,26 @@ HTTPClient::HTTPClient(string baseUrl, string port) {
 }
 
 // Sends GET request to the endpoint
-Response HTTPClient::Get(string endpoint, ParamsData *params, Auth *auth) {
+pair<Response, ErrorCode> HTTPClient::Get(string endpoint, ParamsData *params,
+                                          Auth *auth) {
     if (params != nullptr) { // params to be added to the url
         endpoint += "?";
         for (auto p : *params) {
-            endpoint += p.first;
+            string key, value;
+            std::tie(key, value) = p;
+            endpoint += key;
             endpoint += "=";
-            endpoint += p.second;
+            endpoint += value;
             endpoint += "&";
         }
         endpoint = endpoint.substr(0, endpoint.size() - 1);
     }
     if (auth != nullptr) {
         this->requestHeaders["Authorization"] = auth->getHeaderValue();
+        if (this->requestHeaders["Authorization"].size() == 0) {
+            Response r = Response();
+            return make_pair(r, ErrorCode::error);
+        }
     }
     string message;
     string requestLine =
@@ -35,7 +42,9 @@ Response HTTPClient::Get(string endpoint, ParamsData *params, Auth *auth) {
     message += requestLine;
     if (!this->requestHeaders.empty()) {
         for (auto h : this->requestHeaders) {
-            message += h.first + ":" + h.second + this->terminator;
+            string headerKey, headerValue;
+            std::tie(headerKey, headerValue) = h;
+            message += headerKey + ":" + headerValue + this->terminator;
         }
     }
     message += this->terminator;
@@ -48,7 +57,7 @@ Response HTTPClient::Get(string endpoint, ParamsData *params, Auth *auth) {
         buffer, sizeof(buffer)); //*could use the number of bytes returned later
     Response resp = getResponse(buffer);
     tcpClient->Disconnect();
-    return resp;
+    return make_pair(resp, ErrorCode::ok);
 }
 
 Response HTTPClient::getResponse(char *const buffer) {

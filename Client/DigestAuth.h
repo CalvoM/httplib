@@ -15,6 +15,7 @@ enum class ErrorCode {
     missing_params_value,
     empty_params,
     invalid_algorithm,
+    error,
     ok
 };
 
@@ -31,8 +32,12 @@ class DigestAuth : public Auth {
     bool isParamsEmpty;
     string getItemFromListStr(string, string);
     bool isInParams(string);
+    string getHashUsingAlgo(string);
+    string generateHeaderValue(string, string, string);
     vector<string> nonSessionAlgorithms;
     vector<string> SessionAlgorithms;
+    bool isAlgorithmConfirmed;
+    int nonce_cnt;
 };
 
 #endif
