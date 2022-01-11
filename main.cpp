@@ -23,6 +23,10 @@ int main(int argc, char **argv) {
     DigestAuth auth(&dp);
     Response resp;
     ErrorCode err;
+    Headers header;
+    header["X-RANDOM"] = "WoW";
+    client.AddHeaders(header);
+    client.RemoveHeader("X-RANDOM");
     std::tie(resp, err) = client.Get(endpoint, nullptr, &auth);
     if (err != ErrorCode::ok) {
         return -1;

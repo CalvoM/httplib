@@ -83,3 +83,22 @@ Response HTTPClient::getResponse(char *const buffer) {
     resp->setBody(body, true);
     return *resp;
 }
+
+void HTTPClient::AddHeaders(Headers userHeaders) {
+    if (!userHeaders.empty()) {
+        for (auto h : userHeaders) {
+            string headerKey, headerValue;
+            std::tie(headerKey, headerValue) = h;
+            this->requestHeaders[headerKey] = headerValue;
+        }
+    }
+}
+
+Headers HTTPClient::GetHeaders() const { return this->requestHeaders; }
+
+void HTTPClient::RemoveHeader(string key) {
+    auto header_it = this->requestHeaders.find(key);
+    if (header_it != this->requestHeaders.end()) {
+        this->requestHeaders.erase(header_it);
+    }
+}
