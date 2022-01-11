@@ -30,7 +30,10 @@ class HTTPClient {
     ~HTTPClient() {}
     pair<Response, ErrorCode> Get(string endpoint, ParamsData *params = nullptr,
                                   Auth *auth = nullptr);
+    void AddHeaders(Headers);
+    void RemoveHeader(string);
     void SetPort(string port) { this->port = port; }
+    Headers GetHeaders() const;
 
   private:
     Auth *auth;
