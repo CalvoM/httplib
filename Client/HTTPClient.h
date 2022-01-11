@@ -28,8 +28,8 @@ class HTTPClient {
   public:
     HTTPClient(string baseUrl, string port = "80");
     ~HTTPClient() {}
-    Response Get(string endpoint, ParamsData *params = nullptr,
-                 Auth *auth = nullptr);
+    pair<Response, ErrorCode> Get(string endpoint, ParamsData *params = nullptr,
+                                  Auth *auth = nullptr);
     void SetPort(string port) { this->port = port; }
 
   private:
