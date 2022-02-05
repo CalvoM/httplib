@@ -7,8 +7,9 @@ string getPassword() { return "1234"; }
 
 int main(int argc, char **argv) {
     HTTPClient client("httpbin.org");
-    string endpoint =
-        "/digest-auth/auth/" + getUserName() + "/" + getPassword();
+    //string endpoint =
+    //    "/digest-auth/auth/" + getUserName() + "/" + getPassword();
+    string endpoint = "/gzip";
     ParamsData p;
     DigestAuthParams dp;
     dp["username"] = getUserName();

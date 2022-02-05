@@ -1,5 +1,6 @@
 #include "Response.h"
 #include <math.h>
+#include "../utils/compression.h"
 using std::endl;
 using std::exception;
 using std::stoi;
@@ -19,20 +20,39 @@ void Response::setBody(string body, bool newRequest) {
     for (auto d : contentType.description) {
         cout << d.first << " " << d.second;
     }
+    CompressionAlgorithm algo = CompressionAlgorithm::zlib;
+    unsigned int contentLen= 0;
+    auto lenHeader = this->resHeaders.find("Content-Length");
+    if(lenHeader == this->resHeaders.end()) contentLen = 0;
+    else contentLen = std::stoi(lenHeader->second);
     switch (encoding) {
     case ContentEncoding::none:
         this->body = body;
+        return;
+    case ContentEncoding::gzip:{
+        algo = CompressionAlgorithm::gzip;
         break;
-    case ContentEncoding::gzip:
-    case ContentEncoding::br:
-    case ContentEncoding::compress:
-    case ContentEncoding::deflate:
-        cout << "Response Content-Encoding Not supported!" << endl;
-        break;
-    case ContentEncoding::unsupported:
-    default:
-        cout << "Content-Encoding is unsupported as yet";
     }
+    case ContentEncoding::br:{
+        algo = CompressionAlgorithm::br;
+        break;
+    }
+    case ContentEncoding::compress:{
+        algo = CompressionAlgorithm::compress;
+        break;
+    }
+    case ContentEncoding::deflate:{
+        algo = CompressionAlgorithm::deflate;
+        break;
+    }
+    case ContentEncoding::unsupported:
+    default:{
+        cout << "Content-Encoding is unsupported as yet";
+        return;
+    }
+    }
+    Compression compression(algo);
+    this->body = compression.InflateData(body, contentLen);
 }
 void Response::setHeaders(string headers) {
     string line;

@@ -38,7 +38,7 @@ pair<Response, ErrorCode> HTTPClient::Get(string endpoint, ParamsData *params,
         "GET " + endpoint + " " + this->httpVersion + this->terminator;
     this->requestHeaders["Connection"] = "close";
     this->requestHeaders["Accept"] = "*/*";
-    this->requestHeaders["Accept-Encoding"] = "identity";
+    this->requestHeaders["Accept-Encoding"] = "gzip";
     message += requestLine;
     if (!this->requestHeaders.empty()) {
         for (auto h : this->requestHeaders) {
@@ -62,6 +62,7 @@ pair<Response, ErrorCode> HTTPClient::Get(string endpoint, ParamsData *params,
 
 Response HTTPClient::getResponse(char *const buffer) {
     unique_ptr<Response> resp(new Response);
+    cout<<std::strlen(buffer)<<std::endl;
     string bufferStr = string(buffer);
     size_t term_pos = bufferStr.find(this->terminator);
     if (term_pos == string::npos)
