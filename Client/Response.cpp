@@ -52,6 +52,7 @@ void Response::setBody(string body, bool newRequest) {
     }
     }
     Compression compression(algo);
+    //cout<<decompressGZIP(body, contentLen);
     this->body = compression.InflateData(body, contentLen);
 }
 void Response::setHeaders(string headers) {
@@ -149,19 +150,20 @@ ContentTypeHeader Response::getContentType() {
 string Response::decompressGZIP(string body, int size) {
     unsigned char *data = new unsigned char[size];
     unsigned int i = 0;
-    while (size > 0) {
+    int dsize = size;
+    while (dsize > 0) {
         data[i] = body.c_str()[i];
-        size--;
+        dsize--;
         i++;
     }
-    z_stream strm = {0};
+    z_stream strm;
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
     strm.next_in = data;
     strm.avail_in = size;
-    int z_status = inflateInit2(&strm, MAX_WBITS | 32);
-    cout << z_status;
+    int z_status = inflateInit2(&strm, MAX_WBITS | 16);
+    cout << z_status<<endl;
     switch (z_status) {
     case Z_OK:
     case Z_STREAM_END:
