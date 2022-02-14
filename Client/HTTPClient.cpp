@@ -62,7 +62,6 @@ pair<Response, ErrorCode> HTTPClient::Get(string endpoint, ParamsData *params,
 
 Response HTTPClient::getResponse(char *const buffer) {
     unique_ptr<Response> resp(new Response);
-    cout<<std::strlen(buffer)<<std::endl;
     string bufferStr = string(buffer);
     size_t term_pos = bufferStr.find(this->terminator);
     if (term_pos == string::npos)
@@ -79,6 +78,7 @@ Response HTTPClient::getResponse(char *const buffer) {
     if (headers_end_pos == string::npos)
         return *resp;
     string headers = bufferStr.substr(0, headers_end_pos);
+    headers += headers + "\r\n";
     resp->setHeaders(headers);
     string body = bufferStr.substr(headers_end_pos + 4, string::npos);
     resp->setBody(body, true);
