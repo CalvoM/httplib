@@ -51,6 +51,7 @@ string Compression::InflateData(string data, unsigned int size){
             this->inflateWindowBits = MAX_WBITS + 16;
             string dest;
             inflateData(data, dest);
+            return dest;
             return this->gzipInflate(data);
         }
         case CompressionAlgorithm::deflate: {
@@ -76,6 +77,7 @@ string Compression::deflateInflate(string data){
 }
 int Compression::inflateData(string src, string &dest){
     z_stream strm;
+    int chunk = this->dataSize;
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
     strm.opaque = Z_NULL;
@@ -87,37 +89,40 @@ int Compression::inflateData(string src, string &dest){
     unsigned char out[this->dataSize];
     unsigned have;
     do {
-        std::strcpy(in, src.c_str());
+        std::strcpy((char *)in, src.c_str());
         strm.avail_in = this->dataSize;
-        if(ferror(src)) {
-            (void)inflateEnd(&strm);
-            return Z_ERRNO;
-        }
+        //if(ferror(src)) {
+        //    (void)inflateEnd(&strm);
+        //    return Z_ERRNO;
+        //}
         if(strm.avail_in == 0)
             break;
         strm.next_in = in;
         do {
             strm.avail_out = chunk;
             strm.next_out = out;
-            ret = inflate(&strm, Z_NO_FLUSH);
-            assert(ret != Z_STREAM_ERROR);
-            switch(ret){
+            status = inflate(&strm, Z_NO_FLUSH);
+            assert(status != Z_STREAM_ERROR);
+    cout<<"OK"<<endl;
+            switch(status){
                 case Z_NEED_DICT:
-                    ret = Z_DATA_ERROR;
+                    status = Z_DATA_ERROR;
                 case Z_DATA_ERROR:
                 case Z_MEM_ERROR:
                     (void)inflateEnd(&strm);
-                    return ret;
+                    return status;
             }
             have = chunk - strm.avail_out;
-            if(fwrite(out, 1, have, dest) != have || ferror(dest)) {
-                (void)inflateEnd(&strm);
-                return Z_ERRNO;
-            }
+            cout<<have<<endl;
+            for(int i =0; out[i] != '\0';i++) dest+=out[i];
+//            if(fwrite(out, 1, have, dest) != have || ferror(dest)) {
+//                (void)inflateEnd(&strm);
+//                return Z_ERRNO;
+//            }
         }while (strm.avail_out == 0);
-    }while (ret != Z_STREAM_END);
+    }while (status != Z_STREAM_END);
     (void)inflateEnd(&strm);
-    return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
+    return status == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
     return 0;
 }
 int comp_inf(FILE *src, FILE *dest) {
