@@ -1,7 +1,7 @@
 prog := httpclient
 valgrind_log := valgrind-out.txt
 test_prog := httpclient_test
-cflags := Client/*.cpp sharedlibs/network/*.cpp -I utils -I Client/ -I sharedlibs/network/ -lz -l:libcryptopp.a 
+cflags := Client/*.cpp sharedlibs/network/*.cpp -I utils -I Client/ -I sharedlibs/network/ -lz -lcryptopp
 run: build
 	@./$(prog)
 	
